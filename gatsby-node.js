@@ -6,6 +6,56 @@ const { createFilePath } = require('gatsby-source-filesystem')
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
 
+  const pageLength = 2;
+
+  const pageToPath = (index, pathPrefix, maxPages) => {
+    if (pathPrefix !== null) {
+      pathPrefix = `/${pathPrefix}`;
+    } else {
+      pathPrefix = '';
+    }
+
+    if (index === 1) {
+      return `${pathPrefix}/`;
+    }
+
+    if (index > 1 && index <= maxPages) {
+      return `${pathPrefix}/${index}`;
+    }
+
+    return '';
+  };
+
+  const createPaginatedPages = ({
+    edges,
+    pathPrefix = null,
+    component,
+    context = {}
+  }) => {
+    const groupedPages = edges
+      .map((edge, index) => {
+        return index % pageLength === 0
+          ? edges.slice(index, index + pageLength)
+          : null;
+      })
+      .filter(edge => edge);
+
+    groupedPages.forEach((group, index, groups) => {
+      const pageNumber = index + 1;
+
+      return createPage({
+        path: pageToPath(pageNumber, pathPrefix, groups.length),
+        component: component,
+        context: {
+          group: group,
+          nextPath: pageToPath(pageNumber - 1, pathPrefix, groups.length),
+          prevPath: pageToPath(pageNumber + 1, pathPrefix, groups.length),
+          extraContext: context
+        }
+      });
+    });
+  };
+
   return new Promise((resolve, reject) => {
     const blogPost = path.resolve('./src/templates/blog-post.js')
     resolve(
