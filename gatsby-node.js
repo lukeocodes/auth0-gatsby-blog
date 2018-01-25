@@ -6,25 +6,25 @@ const { createFilePath } = require('gatsby-source-filesystem')
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
 
-  const pageLength = 2;
+  const pageLength = 2
 
   const pageToPath = (index, pathPrefix, maxPages) => {
     if (pathPrefix !== null) {
-      pathPrefix = `/${pathPrefix}`;
+      pathPrefix = `/${pathPrefix}`
     } else {
-      pathPrefix = '';
+      pathPrefix = ''
     }
 
     if (index === 1) {
-      return `${pathPrefix}/`;
+      return `${pathPrefix}/`
     }
 
     if (index > 1 && index <= maxPages) {
-      return `${pathPrefix}/${index}`;
+      return `${pathPrefix}/${index}`
     }
 
-    return '';
-  };
+    return ''
+  }
 
   const createPaginatedPages = ({
     edges,
@@ -36,25 +36,26 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
       .map((edge, index) => {
         return index % pageLength === 0
           ? edges.slice(index, index + pageLength)
-          : null;
+          : null
       })
-      .filter(edge => edge);
+      .filter(edge => edge)
 
-    groupedPages.forEach((group, index, groups) => {
-      const pageNumber = index + 1;
+    _.each(groupedPages, (group, index) => {
+    // groupedPages.forEach((group, index, groups) => {
+      const pageNumber = index + 1
 
       return createPage({
-        path: pageToPath(pageNumber, pathPrefix, groups.length),
+        path: pageToPath(pageNumber, pathPrefix, groupedPages.length),
         component: component,
         context: {
           group: group,
-          nextPath: pageToPath(pageNumber - 1, pathPrefix, groups.length),
-          prevPath: pageToPath(pageNumber + 1, pathPrefix, groups.length),
+          nextPath: pageToPath(pageNumber - 1, pathPrefix, groupedPages.length),
+          prevPath: pageToPath(pageNumber + 1, pathPrefix, groupedPages.length),
           extraContext: context
         }
-      });
-    });
-  };
+      })
+    })
+  }
 
   return new Promise((resolve, reject) => {
     const blogPost = path.resolve('./src/templates/blog-post.js')
@@ -65,10 +66,12 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
             allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
               edges {
                 node {
+                  excerpt
                   fields {
                     slug
                   }
                   frontmatter {
+                    date(formatString: "DD MMMM, YYYY")
                     title
                   }
                 }
@@ -83,11 +86,17 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         }
 
         // Create blog posts pages.
-        const posts = result.data.allMarkdownRemark.edges;
+        const posts = result.data.allMarkdownRemark.edges
+
+        // Create main paginated index of posts.
+        createPaginatedPages({
+          edges: posts,
+          component: path.resolve(`./src/templates/index.js`)
+        })
 
         _.each(posts, (post, index) => {
-          const previous = index === posts.length - 1 ? false : posts[index + 1].node;
-          const next = index === 0 ? false : posts[index - 1].node;
+          const previous = index === posts.length - 1 ? false : posts[index + 1].node
+          const next = index === 0 ? false : posts[index - 1].node
 
           createPage({
             path: post.node.fields.slug,
