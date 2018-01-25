@@ -1,12 +1,11 @@
-const _ = require('lodash')
-const Promise = require('bluebird')
-const path = require('path')
-const { createFilePath } = require('gatsby-source-filesystem')
+const _ = require('lodash');
+const Promise = require('bluebird');
+const path = require('path');
+const { createFilePath } = require('gatsby-source-filesystem');
 
 exports.createPages = ({ graphql, boundActionCreators }) => {
-  const { createPage } = boundActionCreators
-
-  const pageLength = 2
+  const { createPage } = boundActionCreators;
+  const pageLength = 2;
 
   const pageToPath = (index, pathPrefix, maxPages) => {
     if (pathPrefix !== null) {
@@ -24,7 +23,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
     }
 
     return ''
-  }
+  };
 
   const createPaginatedPages = ({
     edges,
@@ -38,27 +37,27 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           ? edges.slice(index, index + pageLength)
           : null
       })
-      .filter(edge => edge)
+      .filter(edge => edge);
+    const maxPages = groupedPages.length;
 
     _.each(groupedPages, (group, index) => {
-    // groupedPages.forEach((group, index, groups) => {
-      const pageNumber = index + 1
+      const pageNumber = index + 1;
 
       return createPage({
-        path: pageToPath(pageNumber, pathPrefix, groupedPages.length),
+        path: pageToPath(pageNumber, pathPrefix, maxPages),
         component: component,
         context: {
           group: group,
-          nextPath: pageToPath(pageNumber - 1, pathPrefix, groupedPages.length),
-          prevPath: pageToPath(pageNumber + 1, pathPrefix, groupedPages.length),
+          nextPath: pageToPath(pageNumber - 1, pathPrefix, maxPages),
+          prevPath: pageToPath(pageNumber + 1, pathPrefix, maxPages),
           extraContext: context
         }
       })
     })
-  }
+  };
 
   return new Promise((resolve, reject) => {
-    const blogPost = path.resolve('./src/templates/blog-post.js')
+    const blogPost = path.resolve('./src/templates/blog-post.js');
     resolve(
       graphql(
         `
@@ -81,22 +80,22 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         `
       ).then(result => {
         if (result.errors) {
-          console.log(result.errors)
-          reject(result.errors)
+          console.log(result.errors);
+          reject(result.errors);
         }
 
         // Create blog posts pages.
-        const posts = result.data.allMarkdownRemark.edges
+        const posts = result.data.allMarkdownRemark.edges;
 
         // Create main paginated index of posts.
         createPaginatedPages({
           edges: posts,
           component: path.resolve(`./src/templates/index.js`)
-        })
+        });
 
         _.each(posts, (post, index) => {
-          const previous = index === posts.length - 1 ? false : posts[index + 1].node
-          const next = index === 0 ? false : posts[index - 1].node
+          const previous = index === posts.length - 1 ? false : posts[index + 1].node;
+          const next = index === 0 ? false : posts[index - 1].node;
 
           createPage({
             path: post.node.fields.slug,
@@ -111,17 +110,17 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
       })
     )
   })
-}
+};
 
 exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
-  const { createNodeField } = boundActionCreators
+  const { createNodeField } = boundActionCreators;
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+    const value = createFilePath({ node, getNode });
     createNodeField({
       name: `slug`,
       node,
       value,
     })
   }
-}
+};
