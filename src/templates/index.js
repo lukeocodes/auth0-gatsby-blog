@@ -36,12 +36,18 @@ class IndexPage extends React.Component {
         })}
         <div>
           {prevPath.length > 0 &&
-          <Link style={{ boxShadow: 'none' }} to={prevPath}>
+          <Link style={{
+            boxShadow: 'none',
+            float: 'left',
+          }} to={prevPath}>
             &lt; Older posts
           </Link>
           }
           {nextPath.length > 0 &&
-          <Link style={{ boxShadow: 'none' }} to={prevPath}>
+          <Link style={{
+            boxShadow: 'none',
+            float: 'right',
+          }} to={prevPath}>
             Newer posts &gt;
           </Link>
           }
