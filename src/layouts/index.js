@@ -7,7 +7,7 @@ import { rhythm, scale } from '../utils/typography';
 
 class Template extends React.Component {
   render() {
-    const { location, children } = this.props
+    const { location, children } = this.props;
 
     // Callback doesn't need nav etc, so return early
     if (location.pathname === '/callback') {
@@ -20,11 +20,11 @@ class Template extends React.Component {
       )
     }
 
-    let header
+    let header;
 
-    let rootPath = `/`
+    let rootPath = `/`;
     if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
-      rootPath = __PATH_PREFIX__ + `/`
+      rootPath = __PATH_PREFIX__ + `/`;
     }
 
     if (location.pathname === rootPath) {
