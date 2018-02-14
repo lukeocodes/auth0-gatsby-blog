@@ -1,5 +1,4 @@
 import React from 'react';
-import Nav from './components/Nav';
 
 export default class HTML extends React.Component {
   render() {
@@ -15,7 +14,6 @@ export default class HTML extends React.Component {
         {this.props.headComponents}
       </head>
       <body>
-      <Nav />
       <div
         id="___gatsby"
         dangerouslySetInnerHTML={{ __html: this.props.body }}
