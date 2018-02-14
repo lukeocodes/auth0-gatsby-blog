@@ -56,7 +56,7 @@ export default class Nav extends React.Component {
                 lineHeight: '37px'
               }}
             >
-              Log Out
+              Log Out ({auth.getUserName()})
             </a>
           )
         }
