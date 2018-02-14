@@ -80,6 +80,8 @@ export default class Auth {
   }
 
   getUserName() {
-    return this.getUser().name;
+    if (this.getUser()) {
+      return this.getUser().name;
+    }
   }
 }
