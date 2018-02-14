@@ -1,16 +1,10 @@
 import React from 'react';
-import Link from 'gatsby-link'
+import Link from 'gatsby-link';
 import get from 'lodash/get';
-import Helmet from 'react-helmet'
+import Helmet from 'react-helmet';
 
-import Bio from '../components/Bio'
-import { rhythm } from '../utils/typography'
-
-// // App.js
-// import Auth from '../components/Auth.js';
-//
-// const auth = new Auth();
-// auth.login();
+import Bio from '../components/Bio';
+import { rhythm } from '../utils/typography';
 
 class IndexPage extends React.Component {
   render() {
