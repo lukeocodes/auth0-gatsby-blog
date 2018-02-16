@@ -13,7 +13,6 @@ export default class Nav extends React.Component {
 
   login() {
     auth.login();
-    this.forceUpdate();
   }
 
   logout() {
