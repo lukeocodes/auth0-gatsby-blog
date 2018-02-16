@@ -70,9 +70,7 @@ class Template extends React.Component {
       )
     }
 
-
-
-      return (
+    return (
       <div>
         <Container
           style={{
