@@ -30,7 +30,6 @@ export default class Auth {
   }
 
   logout() {
-    // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
@@ -41,36 +40,29 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        // navigate to the home route
-        navigateTo('/')
       } else if (err) {
-        // navigate to the home route
-        navigateTo('/')
         console.log(err);
       }
+
+      // Return to the homepage after authentication.
+      navigateTo('/');
     });
   }
 
   isAuthenticated() {
-    // Check whether the current time is past the
-    // access token's expiry time
-    let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   }
 
   setSession(authResult) {
-    // Set the time that the access token will expire at
-    let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
 
-    this.auth0.client.userInfo(authResult.accessToken, function(err, user) {
+    this.auth0.client.userInfo(authResult.accessToken, (err, user) => {
       localStorage.setItem('user', JSON.stringify(user));
     })
-
-    // navigate to the home route
-    navigateTo('/')
   }
 
   getUser() {
