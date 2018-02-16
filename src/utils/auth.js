@@ -2,20 +2,16 @@ import auth0 from 'auth0-js';
 import { navigateTo } from "gatsby-link";
 
 const AUTH0_DOMAIN = 'blog-posts.eu.auth0.com',
- AUTH0_CLIENT_ID = 'CunzU3aIUymzbK424hk5XoLHthP8ezyY',
- AUTH0_REDIRECT_URI = 'http://localhost:8000/callback',
- AUTH0_AUDIENCE = 'https://blog-posts.eu.auth0.com/userinfo',
- AUTH0_RESPONSE_TYPE = 'token id_token',
- AUTH0_SCOPE = 'openid profile';
+ AUTH0_CLIENT_ID = 'CunzU3aIUymzbK424hk5XoLHthP8ezyY';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: AUTH0_DOMAIN,
     clientID: AUTH0_CLIENT_ID,
-    redirectUri: AUTH0_REDIRECT_URI,
-    audience: AUTH0_AUDIENCE,
-    responseType: AUTH0_RESPONSE_TYPE,
-    scope: AUTH0_SCOPE
+    redirectUri: 'http://localhost:8000/callback',
+    audience: `https://${AUTH0_DOMAIN}/userinfo`,
+    responseType: 'token id_token',
+    scope: 'openid profile'
   });
 
   constructor() {
