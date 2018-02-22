@@ -1,8 +1,8 @@
 import auth0 from 'auth0-js';
 import { navigateTo } from "gatsby-link";
 
-const AUTH0_DOMAIN = 'blog-posts.eu.auth0.com',
- AUTH0_CLIENT_ID = 'CunzU3aIUymzbK424hk5XoLHthP8ezyY';
+const AUTH0_DOMAIN = '<your-domain>.auth0.com';
+const AUTH0_CLIENT_ID = '<your-client-id>';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
