@@ -2,7 +2,7 @@ import React from 'react';
 import Auth from '../utils/auth';
 import axios from 'axios';
 
-const wtUri = 'https://wt-b374f39b442dc589a2d950057c95207e-0.run.webtask.io/auth0-newsletter-wt-api';
+const wtUri = '<your webtask uri>';
 const auth = new Auth();
 
 export default class Subscribe extends React.Component {
