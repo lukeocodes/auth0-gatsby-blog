@@ -1,16 +1,12 @@
 import React from 'react';
 import Auth from '../utils/auth';
-import { navigateTo } from "gatsby-link";
+import Subscribe from './Subscribe';
 
 import logo from '../assets/logo-100-blue.png';
 
 const auth = new Auth();
 
 export default class Nav extends React.Component {
-  goTo(route) {
-    navigateTo(`/${route}`);
-  }
-
   login() {
     auth.login();
   }
@@ -54,33 +50,39 @@ export default class Nav extends React.Component {
           <span> | </span>
           {
             !isAuthenticated() && (
-              <a href="#"
-                onClick={this.login.bind(this)}
-                style={{
-                  boxShadow: 'none',
-                  lineHeight: '37px'
-                }}
-              >
-                Log In
-              </a>
+              <span>
+                <a href="#"
+                  onClick={this.login.bind(this)}
+                  style={{
+                    boxShadow: 'none',
+                    lineHeight: '37px'
+                  }}
+                >
+                  Log In
+                </a>
+              </span>
             )
           }
           {
             isAuthenticated() && (
-              <a href="#"
-                onClick={this.logout.bind(this)}
-                style={{
-                  boxShadow: 'none',
-                  lineHeight: '37px'
-                }}
-              >
-                Log Out
-                {
-                  auth.getUserName() && (
-                    <span> ({auth.getUserName()})</span>
-                  )
-                }
-              </a>
+              <span>
+                <a href="#"
+                  onClick={this.logout.bind(this)}
+                  style={{
+                    boxShadow: 'none',
+                    lineHeight: '37px'
+                  }}
+                >
+                  Log Out
+                  {
+                    auth.getUserName() && (
+                      <span> ({auth.getUserName()})</span>
+                    )
+                  }
+                </a>
+                <span> | </span>
+                <Subscribe />
+              </span>
             )
           }
         </div>
