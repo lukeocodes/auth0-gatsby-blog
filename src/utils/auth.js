@@ -1,8 +1,8 @@
 import auth0 from 'auth0-js';
 import { navigateTo } from "gatsby-link";
 
-const AUTH0_DOMAIN = '<your-domain>.auth0.com',
- AUTH0_CLIENT_ID = '<your-client-id>';
+const AUTH0_DOMAIN = 'blog-posts.eu.auth0.com',
+ AUTH0_CLIENT_ID = 'CunzU3aIUymzbK424hk5XoLHthP8ezyY';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -11,7 +11,7 @@ export default class Auth {
     redirectUri: 'http://localhost:8000/callback',
     audience: `https://${AUTH0_DOMAIN}/userinfo`,
     responseType: 'token id_token',
-    scope: 'openid profile'
+    scope: 'openid profile email'
   });
 
   constructor() {
