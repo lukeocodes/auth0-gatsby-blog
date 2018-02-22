@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "auth0-js": "^9.1.1",
+    "axios": "^0.18.0",
     "gatsby": "^1.9.158",
     "gatsby-cli": "^1.1.41",
     "gatsby-link": "^1.6.34",
