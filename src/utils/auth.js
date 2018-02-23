@@ -9,7 +9,7 @@ export default class Auth {
     domain: AUTH0_DOMAIN,
     clientID: AUTH0_CLIENT_ID,
     redirectUri: 'http://localhost:8000/callback',
-    audience: `https://${AUTH0_DOMAIN}/userinfo`,
+    audience: `https://${AUTH0_DOMAIN}/api/v2/`,
     responseType: 'token id_token',
     scope: 'openid profile email'
   });

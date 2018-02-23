@@ -17,44 +17,47 @@ export default class Subscribe extends React.Component {
     return (localStorage.getItem('subscribed') == 'true');
   }
 
+  isIdentified() {
+    return auth.getUser() && auth.isAuthenticated();
+  }
+
   componentWillMount() {
-    if (auth.getUser() && localStorage.getItem("subscribed") === null) {
-      console.log('checking');
-      const email = auth.getUser().email;
-      axios.get(`${wtUri}/subscribed/${email}`)
+    if (this.isIdentified() && localStorage.getItem('subscribed') === null) {
+      const token = localStorage.getItem('access_token');
+      axios.get(`${wtUri}/subscribed`, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(res => {
-          localStorage.setItem('subscribed', res.data.subscribed)
+          localStorage.setItem('subscribed', (res.data.status == 'subscribed'));
           this.setState({
             subscribed: this.isSubscribed()
-          })
+          });
         })
         .catch(console.error);
     }
   }
 
   subscribe() {
-    if (auth.getUser()) {
-      const email = auth.getUser().email;
-      axios.post(`${wtUri}/subscribe`, {email: email})
+    if (this.isIdentified()) {
+      const token = localStorage.getItem('access_token');
+      axios.get(`${wtUri}/subscribe`, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(res => {
-          localStorage.setItem('subscribed', 'true')
+          localStorage.setItem('subscribed', 'true');
           this.setState({
             subscribed: this.isSubscribed()
-          })
+          });
         })
         .catch(console.error);
     }
   }
 
   unsubscribe() {
-    if (auth.getUser()) {
-      const email = auth.getUser().email;
-      axios.post(`${wtUri}/unsubscribe`, {email: email})
+    if (this.isIdentified()) {
+      const token = localStorage.getItem('access_token');
+      axios.get(`${wtUri}/unsubscribe`, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(res => {
-          localStorage.removeItem('subscribed')
+          localStorage.removeItem('subscribed');
           this.setState({
             subscribed: false
-          })
+          });
         })
         .catch(console.error);
     }
