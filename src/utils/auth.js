@@ -11,7 +11,7 @@ export default class Auth {
     redirectUri: 'http://localhost:8000/callback',
     audience: `https://${AUTH0_DOMAIN}/api/v2/`,
     responseType: 'token id_token',
-    scope: 'openid profile email'
+    scope: 'openid profile'
   });
 
   constructor() {
