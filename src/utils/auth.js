@@ -11,7 +11,7 @@ export default class Auth {
     redirectUri: 'http://localhost:8000/callback',
     audience: `https://${AUTH0_DOMAIN}/api/v2/`,
     responseType: 'token id_token',
-    scope: 'openid profile'
+    scope: 'openid profile email'
   });
 
   constructor() {
@@ -33,16 +33,18 @@ export default class Auth {
   }
 
   handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-      } else if (err) {
-        console.log(err);
-      }
+    if (typeof window !== 'undefined') {
+      this.auth0.parseHash((err, authResult) => {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.setSession(authResult);
+        } else if (err) {
+          console.log(err);
+        }
 
-      // Return to the homepage after authentication.
-      navigateTo('/');
-    });
+        // Return to the homepage after authentication.
+        navigateTo('/');
+      });
+    }
   }
 
   isAuthenticated() {

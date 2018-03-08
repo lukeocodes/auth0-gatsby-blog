@@ -7,18 +7,36 @@ import logo from '../assets/logo-100-blue.png';
 const auth = new Auth();
 
 export default class Nav extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authenticated: false
+    };
+  }
+
   login() {
     auth.login();
+
+    this.setState({
+      authenticated: auth.isAuthenticated()
+    });
   }
 
   logout() {
     auth.logout();
-    this.forceUpdate();
+
+    this.setState({
+      authenticated: auth.isAuthenticated()
+    });
+  }
+
+  componentDidMount() {
+    this.setState({
+      authenticated: auth.isAuthenticated()
+    });
   }
 
   render() {
-    const { isAuthenticated } = auth;
-
     return (
       <div
         style={{
@@ -49,7 +67,7 @@ export default class Nav extends React.Component {
           </a>
           <span> | </span>
           {
-            !isAuthenticated() && (
+            !this.state.authenticated && (
               <span>
                 <a href="#"
                   onClick={this.login.bind(this)}
@@ -64,7 +82,7 @@ export default class Nav extends React.Component {
             )
           }
           {
-            isAuthenticated() && (
+            this.state.authenticated && (
               <span>
                 <a href="#"
                   onClick={this.logout.bind(this)}

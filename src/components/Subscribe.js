@@ -21,7 +21,7 @@ export default class Subscribe extends React.Component {
     return auth.getUser() && auth.isAuthenticated();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.isIdentified() && localStorage.getItem('subscribed') === null) {
       const token = localStorage.getItem('access_token');
       axios.get(`${wtUri}/subscribed`, {headers: {"Authorization" : `Bearer ${token}`}})
