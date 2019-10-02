@@ -22,9 +22,11 @@ class LoadingSvg extends React.Component {
 }
 
 class Callback extends React.Component {
-  render() {
+  componentDidMount () {
     const auth = new Auth();
     auth.handleAuthentication();
+  }
+  render() {
     return (
       <div>
         <LoadingSvg />
